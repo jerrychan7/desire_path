@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <title>Desire Path (three.js)</title>
+        <link type="text/css" rel="stylesheet" href="./index.css" />
+        <link id="favicon" rel="icon" href="#" type="image/x-icon" />
+        <!-- <script type="importmap">
+            {
+                "imports": {
+                    "three": "./node_modules/three/build/three.module.js",
+                    "three/": "./node_modules/three/",
+                    "three-csg": "./models/three-csg.min.js"
+                }
+            }
+        </script> -->
+        <script defer type="text/javascript" src="./node_modules/three/build/three.min.js"></script>
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/utils/BufferGeometryUtils.js"></script>
+        <!-- --
+        <script defer src="./node_modules/eruda/eruda.js" onload="eruda.init();"></script>
+        <!-- -->
+        <!-- --
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/controls/OrbitControls.js"></script>
+        <!-- -->
+        <script defer type="text/javascript" src="./node_modules/three-nebula/build/three-nebula.js"></script>
+        <script defer type="text/javascript" src="./lottie.min.js"></script>
+        <script defer type="module" src="./index.js"></script>
+    </head>
+    <body>
+        <div id="page-loading">Loading...</div>
+        <div id="top-btns">
+            <a id="github-icon-btn" class="topside-btn-margin" href="https://github.com/jerrychan7/desire_path"></a>
+            <div id="full-screen-icon-btn" class="topside-btn-margin"></div>
+        </div>
+        <div id="page-playing" style="display: none;">
+            <canvas id="game-canvas">Your browser does not support WebGL.</canvas>
+            <div class="game-cover"></div>
+            <div id="nowScoreBox" class="topside-btn-margin"><span id="nowScore"></span></div>
+            <div id="operation-discription">
+                <div class="touch-device">
+                    <div class="left">◯<br/>TAP HERE TO<br/>MOVE LEFT</div>
+                    <div class="right">◯<br/>TAP HERE TO<br/>MOVE RIGHT</div>
+                </div>
+                <div class="pc-device">
+                    <div class="left">◯<br/>CLICK A TO<br/>MOVE LEFT</div>
+                    <div class="right">◯<br/>CLICK D TO<br/>MOVE RIGHT</div>
+                </div>
+            </div>
+        </div>
+        <div id="page-welcome" style="display: none;">
+            <div class="setting-icon-btn topside-btn-margin"></div>
+            <div class="menu">
+                <div class="title">
+                    <h1>D E S I R E</h1>
+                    <h2>P ◈ A ◈ T ◈ H</h2>
+                </div>
+                <div class="btns">
+                    <div class="levels-mode-btn">LEVELS<br/>MODE</div>
+                    <div class="play-icon-btn"></div>
+                </div>
+            </div>
+        </div>
+        <div id="page-challenges" style="display: none;">
+            <div class="back-icon-btn topside-btn-margin"></div>
+            <div class="levels"></div>
+            <div class="title">
+                <h1>D E S I R E</h1>
+                <h2>P ◈ A ◈ T ◈ H</h2>
+                <h3>CHALLENGES</h3>
+            </div>
+        </div>
+        <div id="page-gameover" style="display: none;">
+            <div class="back-icon-btn topside-btn-margin"></div>
+            <div class="info"></div>
+            <div class="player-color-select">
+                <div class="player-color-options"></div>
+                <div id="player-color-option-template" style="display: none;">
+                    <canvas></canvas>
+                    <div class="lock-icon"></div>
+                </div>
+                <div class="crystal-info">
+                    <span id="currentCrystalCount"></span> / <span id="crystalSpend">500</span> <span class="crystal-icon"></span>
+                </div>
+            </div>
+            <div class="replay-icon-btn"></div>
+        </div>
+        <div id="page-challenges-success" style="display: none;">
+            <h1>CHALLENGE&nbsp;&nbsp;<span id="level-num">1</span></h1>
+            <h1>COMPLETE!</h1>
+            <div class="trophy-icon"></div>
+            <div class="title">
+                <h1>D E S I R E</h1>
+                <h2>P ◈ A ◈ T ◈ H</h2>
+                <div class="back-icon-btn"></div>
+            </div>
+        </div>
+        <div id="page-setting" style="display: none;">
+            <div class="btns">
+                <div id="music-btn" class="music-icon-btn"></div>
+                <div class="back-icon-btn"></div>
+            </div>
+        </div>
+    </body>
+</html>

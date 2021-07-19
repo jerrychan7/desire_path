@@ -1,0 +1,15 @@
+/node_modules/*
+old_*/
+*副本*
+/test.html
+/test.js
+PTM*.mp3
+DesirePath*.7z
+
+
+# need add with -f
+!/node_modules/three/build/three.min.js
+!/node_modules/three/examples/js/controls/OrbitControls.js
+!/node_modules/three/examples/js/utils/BufferGeometryUtils.js
+!/node_modules/three-nebula/build/three-nebula.js
+!/node_modules/eruda/eruda.js

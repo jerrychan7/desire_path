@@ -1,0 +1,22 @@
+{
+  "name": "desire-path-threejs",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "threejs"
+  ],
+  "author": "qinshou2017",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.129.0",
+    "three-nebula": "^10.0.1"
+  },
+  "devDependencies": {
+    "eruda": "^2.4.1"
+  }
+}
