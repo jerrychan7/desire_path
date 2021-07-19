@@ -61,3 +61,7 @@ python -m http.server [port]
     * starry sky,
     * and related bgm
 * High contrast simplified version
+* More challenge level
+* More map unit
+* More comfortable map loading
+* Adjust the color of dead particles according to the color of the cube
