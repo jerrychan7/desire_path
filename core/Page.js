@@ -371,9 +371,9 @@ function init() {
         }
         else if (effectContent.innerHTML == "E2") {
             ri(2);
-            effectContent.innerHTML = "OR";
+            effectContent.innerHTML = "OG";
         }
-        else if (effectContent.innerHTML == "OR") {
+        else if (effectContent.innerHTML == "OG") {
             ri(0);
             effectContent.innerHTML = "E1";
         }

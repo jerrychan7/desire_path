@@ -142,7 +142,8 @@ class Game {
             if (msg === "init") return;
             if (msg !== undefined || !("level" in this)) {
                 this.setLevel(msg);
-                pages.playing.setCoverColor(this.maps.backgroundColor);
+                if (effectType) pages.playing.setCoverColor("#002FA7");
+                else pages.playing.setCoverColor(this.maps.backgroundColor);
             }
             this.start();
         });
