@@ -771,13 +771,17 @@ class MapUnit extends GameObj {
         this.switchMap = {};
         this.subLevel = ~~(Math.random() * units[level].length);
         // this.subLevel = level >= 0? 1: 18;
-        units[level][this.subLevel]?.maps?.forEach((row, x) => {
+        units[level][this.subLevel] &&
+        units[level][this.subLevel].maps &&
+        units[level][this.subLevel].maps.forEach((row, x) => {
             row.forEach((tile, z) => {
                 if (x >= 5) z += x - 4;
                 this.setTileByID(tile[0], x, z, ...tile);
             });
         });
-        units[level][this.subLevel]?.entities?.forEach(ent => {
+        units[level][this.subLevel] &&
+        units[level][this.subLevel].entities &&
+        units[level][this.subLevel].entities.forEach(ent => {
             this.setEntityByType(ent.type, ent.initPos[0], ent.initPos[2], ent);
         });
         let [xs, zs] = Object.keys(this.tiles).reduce((ans, key) => {
@@ -832,9 +836,12 @@ class MapUnit extends GameObj {
         }
         else if (type == "ThornTile") {
             tile = new Tile(tileX, tileZ, initArgs[1], initArgs[2]);
-            this.switchMap[x + "," + z]?.setTargetTile(tile);
-            delete this.switchMap[x + "," + z];
-            // console.log(x + "," + z);
+            let k = x + "," + z;
+            if (this.switchMap[k]) {
+                this.switchMap[k].setTargetTile(tile);
+                delete this.switchMap[k];
+            }
+            // console.log(k);
         }
         else if (type == "AccZoneTile") {
             tile = new Tile(tileX, tileZ, { direction: [
@@ -914,7 +921,8 @@ class GameMap extends THREE.Group {
         unit.dispose();
     };
     getTile(x, z) {
-        return this.getUnitByTileXZ(x, z)?.getTile(x, z) || null;
+        let t = this.getUnitByTileXZ(x, z);
+        return (t && t.getTile(x, z)) || null;
     };
     update(playerPos) {
         if (this.level > 0) return;

@@ -178,7 +178,9 @@ body:fullscreen .full-screen-icon-btn {
 #page-welcome .levels-mode-btn {
     position: absolute;
     padding: 10px;
-    top: 50%; left: calc(50% - min(11.82vh, 21vw) - 2vw - 10px);
+    top: 50%;
+    left: 25%;
+    left: calc(50% - min(11.82vh, 21vw) - 2vw - 10px);
     transform: translate(-50%, -50%) rotate(-15deg);
     border: #fff 1px solid;
     animation: levels-mode-btn-ani 0.4s infinite;
@@ -206,20 +208,17 @@ body:fullscreen .full-screen-icon-btn {
     margin: auto;
     margin-top: 15px;
     /* background-color: #6e8ef9; */
+    width: 80vw;
     width: calc(min(100vw, 60vh - 15px - (2.865vh + min(6.852vw, 3.86vh))) * 0.9);
+    height: 80vw;
     height: calc(min(100vw, 60vh - 15px - (2.865vh + min(6.852vw, 3.86vh))) * 0.9);
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    /* justify-content: space-between; */
-    /* align-content: space-between; */
-    justify-content: flex-start;
-    align-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(5, 19%);
+    grid-template-rows: repeat(5, 19%);
     gap: 1.25%;
 }
 #page-challenges .levels > * {
     font-size: xx-large;
-    width: 19%; height: 19%;
     border: #fff 2px solid;
     box-sizing: border-box;
     display: flex;
@@ -251,7 +250,7 @@ body:fullscreen .full-screen-icon-btn {
     width: 100vw;
     top: 11%;
     line-height: 9vh;
-    background-color: #00000066;
+    background-color: rgba(0, 0, 0, 0.4);
     text-align: center;
     vertical-align: middle;
 }
@@ -263,7 +262,7 @@ body:fullscreen .full-screen-icon-btn {
     position: absolute;
     top: 45.5%;
     width: 100vw;
-    background-color: #00000066;
+    background-color: rgba(0, 0, 0, 0.4);
     height: 17vh;
 }
 #page-gameover .player-color-select::before {
@@ -287,8 +286,8 @@ body:fullscreen .full-screen-icon-btn {
     height: 44.4776%;
     text-align: center;
     overflow-x: scroll;
-    display: flex;
-    gap: 4vh;
+    overflow-y: hidden;
+    white-space: nowrap;
 
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -297,10 +296,12 @@ body:fullscreen .full-screen-icon-btn {
     --height: calc(17vh * 0.444776);
     height: var(--height);
     width: calc(var(--height) * var(--SQRT3) / 2);
+    margin: 0 2vh;
 
     scroll-snap-align: center;
 
     position: relative;
+    display: inline-block;
 }
 #page-gameover .player-color-options > *:first-child {
     margin-left: calc(50vw - (17vh * 0.444776 * var(--SQRT3) / 2) / 2);
@@ -415,7 +416,7 @@ body:fullscreen .full-screen-icon-btn {
 
 
 #page-challenges-success {
-    background-color: #00000044;
+    background-color: rgba(0, 0, 0, 0.27);
 }
 #page-challenges-success > h1 {
     text-align: center;

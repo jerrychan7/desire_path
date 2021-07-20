@@ -33,7 +33,7 @@ class Page {
             this.listeners[type].push(listener);
     };
     dispatchEvent(type, msg) {
-        this.listeners[type]?.forEach(fn => fn(msg));
+        this.listeners[type] && this.listeners[type].forEach(fn => fn(msg));
     };
     async show(msg) {
         this.dispatchEvent("onbeforeshow", msg);

@@ -29,7 +29,7 @@ class Animate {
         this.clearTimer();
     };
     onrender(timestamp = 0) {
-        this.update?.(timestamp);
+        this.update && this.update(timestamp);
         this.render();
         if (!this.stopFlag)
             this.timer = requestAnimationFrame(this.onrender.bind(this));
@@ -64,12 +64,12 @@ class Game {
             this.listeners[type].push(listener);
     };
     dispatchEvent(type, ...msg) {
-        this.listeners[type]?.forEach(fn => fn(...msg));
+        this.listeners[type] && this.listeners[type].forEach(fn => fn(...msg));
     };
     setLevel(level = -~~(Math.random() * 5)) {
         this.score = 0;
         this.players.forEach(player => player.dispose());
-        this.maps?.dispose();
+        this.maps && this.maps.dispose();
         GameObj.disposeAll();
         this.level = level;
         let player = new entities.PlayerEntity();
@@ -194,13 +194,13 @@ class Game {
                 player.dispose();
                 this.players.splice(i--, 1);
             }
-            if (ground?.type === "AccZoneTile" && !player.moving) {
+            if (ground && ground.type === "AccZoneTile" && !player.moving) {
                 player.startMove(ground.direction, { timeScale: 0.5, });
                 sounds["accZone"].play();
             }
             let triggerTile = player.triggerCollisionDetection();
             if (triggerTile) {
-                triggerTile.activity?.(true);
+                triggerTile.activity && triggerTile.activity(true);
                 // console.log(triggerTile)
                 if (triggerTile.type == "SwitchTile") {
                     if (triggerTile.switchType == 1) {
@@ -216,7 +216,7 @@ class Game {
             }
             let reward = player.rewardCollisionDetection();
             if (reward && reward.activation) {
-                reward.activity?.();
+                reward.activity && reward.activity();
                 console.log("+1", reward.type);
                 if (reward.type == "CrystalTile") {
                     particle.crystal(reward.position);

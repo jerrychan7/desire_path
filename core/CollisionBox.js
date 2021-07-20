@@ -15,8 +15,9 @@ class CollisionBox extends THREE.Box3 {
     static get REWARD_LAYER() { return REWARD_LAYER; };
     static get TRIGGER_LAYER() { return TRIGGER_LAYER; };
     static intersectsBox(box, layer) {
-        let obj = collisionBoxs[layer]?.find(b => b.intersectsBox(box))?.obj;
-        return obj?.objReturedAfterCollision || obj || null;
+        let obj = collisionBoxs[layer] && collisionBoxs[layer].find(b => b.intersectsBox(box));
+        obj = obj && obj.obj;
+        return (obj && obj.objReturedAfterCollision) || obj || null;
     };
     constructor(module = null, layers = [], {
         showBoxHelper = DEBUGGING,
@@ -44,9 +45,9 @@ class CollisionBox extends THREE.Box3 {
     };
     update() {
         if (!this.obj) return this;
-        this.obj.onBeforeCalcCollisionBox?.();
+        this.obj.onBeforeCalcCollisionBox && this.obj.onBeforeCalcCollisionBox();
         this.setFromObject(this.obj.calcCollisionBoxObj || this.obj);
-        this.obj.onAfterCalcCollisionBox?.();
+        this.obj.onAfterCalcCollisionBox && this.obj.onAfterCalcCollisionBox();
         return this;
     };
     dispose() {
@@ -54,7 +55,7 @@ class CollisionBox extends THREE.Box3 {
             const layer = this.layers.pop(), cl = collisionBoxs[layer];
             cl.splice(cl.indexOf(this), 1);
         }
-        this.boxHelper?.removeFromParent();
+        this.boxHelper && this.boxHelper.removeFromParent();
     };
 };
 

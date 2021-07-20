@@ -8,6 +8,19 @@
         <title>Desire Path (three.js)</title>
         <link type="text/css" rel="stylesheet" href="./index.css" />
         <link id="favicon" rel="icon" href="#" type="image/x-icon" />
+        <script>
+            (function() {
+                var ua = window.navigator.userAgent.toLowerCase();
+                if (ua.match(/MicroMessenger/i) != 'micromessenger') return;
+                var p = navigator.platform;
+                if (p.indexOf("Win") == 0 || p.indexOf("Mac") == 0) {
+                    if (navigator.language.indexOf("zh-CN") == 0)
+                        alert("不支持在微信pc内置浏览器中运行！请在其他浏览器中打开。");
+                    else
+                        alert("Does not support running in WeChat PC built-in browser! Please open in other browsers.");
+                }
+            })();
+        </script>
         <!-- <script type="importmap">
             {
                 "imports": {
@@ -19,6 +32,9 @@
         </script> -->
         <script defer type="text/javascript" src="./node_modules/three/build/three.min.js"></script>
         <script defer type="text/javascript" src="./node_modules/three/examples/js/utils/BufferGeometryUtils.js"></script>
+        <!-- --
+        <script defer src="https://unpkg.com/vconsole/dist/vconsole.min.js" onload="var vConsole = new window.VConsole();"></script>
+        <!-- -->
         <!-- --
         <script defer src="./node_modules/eruda/eruda.js" onload="eruda.init();"></script>
         <!-- -->

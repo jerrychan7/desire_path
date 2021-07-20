@@ -81,7 +81,7 @@ class Entity extends GameObj {
         return CollisionBox.intersectsBox(this.collisionBox, layer);
     };
     disposeCollisionBox() {
-        this.collisionBox?.dispose();
+        this.collisionBox && this.collisionBox.dispose();
     };
     dispose() {
         if (this.disposed) return false;

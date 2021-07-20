@@ -24,11 +24,12 @@ class SwitchTile extends GroundTile {
     activity(trueOrFalse) {
         this.switchMod.activity(trueOrFalse);
         this.collisionBoxUpdate();
-        if (this.targetTile?.type == "SwitchTile") {
+        if (!this.targetTile) return;
+        if (this.targetTile.type == "SwitchTile") {
             if (this.targetTile.activation != this.activation)
                 this.targetTile.activity(trueOrFalse);
         }
-        else this.targetTile?.activity?.(!trueOrFalse);
+        else this.targetTile.activity && this.targetTile.activity(!trueOrFalse);
     };
 };
 

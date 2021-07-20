@@ -39,7 +39,7 @@ class Tile extends Entity {
         super.collisionBoxUpdate();
     };
     disposeGroundCollisionBox() {
-        this.groundCollisionBox?.dispose();
+        this.groundCollisionBox && this.groundCollisionBox.dispose();
     };
     dispose() {
         if (this.disposed) return false;
