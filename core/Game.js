@@ -265,14 +265,14 @@ class Game {
         psys.update();
         this.lastTimestamp = timestamp;
     };
-    over() {
-        this.dispatchEvent("onover", this.score);
+    over(dispatch = true) {
+        dispatch && this.dispatchEvent("onover", this.score);
         delete this.level;
         this.animater.stop();
         this.state = "";
     };
-    challengeSuccess() {
-        this.dispatchEvent("onChallengeSuccess", this.level);
+    challengeSuccess(dispatch = true) {
+        dispatch && this.dispatchEvent("onChallengeSuccess", this.level);
         delete this.level;
         this.animater.stop();
         this.state = "";
@@ -280,7 +280,6 @@ class Game {
 };
 
 const game = new Game();
-window.asdf = game;
 
 export {
     game,

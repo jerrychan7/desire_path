@@ -32,11 +32,12 @@ class Page {
         if (!this.listeners[type].includes(listener))
             this.listeners[type].push(listener);
     };
-    dispatchEvent(type, msg) {
-        this.listeners[type] && this.listeners[type].forEach(fn => fn(msg));
+    dispatchEvent(type, ...msg) {
+        this.listeners[type] && this.listeners[type].forEach(fn => fn(...msg));
     };
-    async show(msg) {
-        this.dispatchEvent("onbeforeshow", msg);
+    async show(msg, lastPage = history[history.length - 1]) {
+        // console.log(this.domElement.id, lastPage, history.map(p => p?.domElement.id));
+        this.dispatchEvent("onbeforeshow", msg, lastPage);
         if (this.fadeIn) {
             this.domElement.style.transition = "none";
             this.domElement.style.opacity = 0;
@@ -47,7 +48,7 @@ class Page {
         this.domElement.style.display = "";
         history.push(this);
         history.shift();
-        this.dispatchEvent("onshown", msg);
+        this.dispatchEvent("onshown", msg, lastPage);
     };
     hide(msg) {
         this.domElement.style.display = "none";
@@ -64,6 +65,7 @@ let challenges = null;
 let playing = null;
 let gameover = null;
 let challengesSuccess = null;
+let pause = null;
 
 
 function init() {
@@ -74,6 +76,7 @@ function init() {
     playing = new Page("page-playing", false);
     gameover = new Page("page-gameover");
     challengesSuccess = new Page("page-challenges-success");
+    pause = new Page("page-pause");
 
     welcome.settingBtn = welcome.domElement.getElementsByClassName("setting-icon-btn")[0];
     welcome.levelsModeBtn = welcome.domElement.getElementsByClassName("levels-mode-btn")[0];
@@ -92,7 +95,14 @@ function init() {
     playing.operationDiscription = document.getElementById("operation-discription");
     playing.nowScoreBox = document.getElementById("nowScoreBox");
     playing.nowScore = document.getElementById("nowScore");
+    playing.pauseBtn = playing.domElement.getElementsByClassName("pause-icon-btn")[0];
     playing.coverColor = "transparent";
+    playing.hide = playing.oncover = (showScore = true, showColor = true) => {
+        playing.pauseBtn.style.display =
+        playing.operationDiscription.style.display = "none";
+        if (!showScore) playing.nowScore.style.display = "none";
+        if (!showColor) playing.setCoverColor("transparent");
+    };
 
     gameover.backBtn = gameover.domElement.getElementsByClassName("back-icon-btn")[0];
     gameover.info = gameover.domElement.getElementsByClassName("info")[0];
@@ -122,6 +132,10 @@ function init() {
 
     challengesSuccess.levelNum = document.getElementById("level-num");
     challengesSuccess.backBtn = challengesSuccess.domElement.getElementsByClassName("back-icon-btn")[0];
+
+    pause.replayBtn = pause.domElement.getElementsByClassName("replay-icon-btn")[0];
+    pause.playBtn = pause.domElement.getElementsByClassName("play-icon-btn")[0];
+    pause.info = pause.domElement.getElementsByClassName("info")[0];
 
 
     function scrollHorizontally(e) {
@@ -260,10 +274,17 @@ function init() {
         playing.domElement.style.setProperty("--cover-color", color);
         if (color != "transparent") playing.coverColor = color;
     };
+    playing.pauseBtn.onclick = () => {
+        if (game.state == "playing")
+            pause.show();
+    };
     if (isTouchDevice) playing.operationDiscription.getElementsByClassName("pc-device")[0].style.display = "none";
     else playing.operationDiscription.getElementsByClassName("touch-device")[0].style.display = "none";
-    playing.addEventListener("onshown", async (msg) => {
-        if (history[history.length - 2] !== welcome) {
+    playing.addEventListener("onshown", async (msg, lastPage) => {
+        // console.log(lastPage?.domElement.id);
+        if (lastPage === welcome || lastPage === challenges)
+            playing.lastPage = lastPage;
+        if (playing.lastPage !== welcome) {
             playing.nowScore.innerHTML = "";
             playing.nowScore.style.display = "none";
         }
@@ -280,13 +301,14 @@ function init() {
             await sleep(0);
             operationDiscription.style.transition = "";
             operationDiscription.style.opacity = 0;
+            playing.pauseBtn.style.display = "";
         }
         else operationDiscription.style.display = "none";
     });
 
     gameover.backBtn.onclick = () => {
         gameover.hide();
-        if (history[history.length - 3] === welcome) {
+        if (playing.lastPage === welcome) {
             welcome.show();
         }
         else {
@@ -295,7 +317,7 @@ function init() {
     };
     gameover.replayBtn.onclick = () => {
         gameover.hide();
-        if (history[history.length - 3] === welcome) {
+        if (playing.lastPage === welcome) {
             welcome.show();
         }
         else {
@@ -304,12 +326,13 @@ function init() {
     };
     gameover.playerColorSelect.onclick = () => {};
     gameover.addEventListener("onbeforeshow", () => {
-        playing.operationDiscription.style.display = "none";
+        playing.oncover(false, false);
+        gameover.currentCrystalCount.innerHTML = localStorage.getItem("currentCrystalCount") || 0;
     });
-    gameover.addEventListener("onshown", (score = 0, best = Math.max(score, localStorage.getItem("bestScore") || 0)) => {
-        playing.setCoverColor("transparent");
-        playing.nowScore.style.display = "none";
-        if (history[history.length - 3] === welcome) {
+    gameover.addEventListener("onshown", (score = 0) => {
+        let best = Math.max(score, localStorage.getItem("bestScore") || 0);
+        playing.oncover(false, false);
+        if (playing.lastPage === welcome) {
             gameover.backBtn.style.display = "none";
             gameover.info.innerHTML = `<h1>SCORE ${score}</h1><h2>BEST ${best}</h2>`;
             localStorage.setItem("bestScore", best);
@@ -321,9 +344,6 @@ function init() {
     });
     game.addEventListener("onover", (score) => {
         gameover.show(score);
-    });
-    gameover.addEventListener("onbeforeshow", () => {
-        gameover.currentCrystalCount.innerHTML = localStorage.getItem("currentCrystalCount") || 0;
     });
 
     challengesSuccess.backBtn.onclick = () => {
@@ -337,7 +357,31 @@ function init() {
     game.addEventListener("onChallengeSuccess", (level) => {
         challengesSuccess.show(level);
     });
-    
+
+    pause.replayBtn.onclick = () => {
+        pause.hide();
+        playing.oncover(false, false);
+        if (playing.lastPage === welcome) {
+            if (game.state != "over") game.over(false);
+            welcome.show();
+        }
+        else {
+            playing.show(challenges.currentLevel);
+        }
+    };
+    pause.playBtn.onclick = () => {
+        pause.hide();
+        playing.show();
+        game.start();
+    };
+    pause.addEventListener("onbeforeshow", () => {
+        game.pause();
+        playing.oncover();
+        if (playing.lastPage == welcome)
+            pause.info.innerHTML = "Endless Mode";
+        else pause.info.innerHTML = "Challenge Mode<br/>Level " + challenges.currentLevel;
+    });
+
     window.addEventListener("keydown", e => {
         if (["Space", "Enter"].includes(e.code)) {
             if (gameover.isShown()) {
@@ -397,5 +441,6 @@ export {
     playing,
     gameover,
     challengesSuccess,
+    pause,
     init,
 };
