@@ -1,8 +1,7 @@
 /node_modules/*
 old_*/
 *副本*
-/test.html
-/test.js
+/test*
 PTM*.mp3
 DesirePath*.7z
 

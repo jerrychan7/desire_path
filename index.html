@@ -32,6 +32,18 @@
         </script> -->
         <script defer type="text/javascript" src="./node_modules/three/build/three.min.js"></script>
         <script defer type="text/javascript" src="./node_modules/three/examples/js/utils/BufferGeometryUtils.js"></script>
+
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/shaders/LuminosityShader.js"></script>
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/shaders/SobelOperatorShader.js"></script>
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/shaders/PixelShader.js"></script>
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/shaders/CopyShader.js"></script>
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/shaders/RGBShiftShader.js"></script>
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/shaders/DotScreenShader.js"></script>
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/shaders/FilmShader.js"></script>
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/postprocessing/EffectComposer.js"></script>
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/postprocessing/RenderPass.js"></script>
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/postprocessing/ShaderPass.js"></script>
+        <script defer type="text/javascript" src="./node_modules/three/examples/js/postprocessing/FilmPass.js"></script>
         <!-- --
         <script defer src="https://unpkg.com/vconsole/dist/vconsole.min.js" onload="var vConsole = new window.VConsole();"></script>
         <!-- -->
@@ -50,6 +62,7 @@
         <div id="top-btns">
             <a id="github-icon-btn" class="topside-btn-margin" href="https://github.com/jerrychan7/desire_path"></a>
             <div id="full-screen-icon-btn" class="topside-btn-margin"></div>
+            <div id="effect-btn" class="topside-btn-margin" style="display: none;"><span id="effect-content"></span></div>
         </div>
         <div id="page-playing" style="display: none;">
             <canvas id="game-canvas">Your browser does not support WebGL.</canvas>

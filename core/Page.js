@@ -1,6 +1,6 @@
 
 import game from "./Game.js";
-import { rendererInit } from "./threeApp.js";
+import { rendererInit, effectType } from "./threeApp.js";
 import { soundsPromise, getMute, setMute } from "../sounds/index.js";
 import * as pcr from "./playerColorRender.js";
 import * as favicon from "./favicon.js";
@@ -219,7 +219,8 @@ function init() {
     });
     welcome.addEventListener("onshown", () => {
         game.showFirstFrame();
-        playing.setCoverColor(game.maps.backgroundColor);
+        if (effectType) playing.setCoverColor("#002FA7");
+        else playing.setCoverColor(game.maps.backgroundColor);
     });
 
     setting.musicBtn.onclick = () => {
@@ -354,6 +355,37 @@ function init() {
     rendererInit();
     game.init();
     pcr.init();
+
+    const effectBtn = document.getElementById("effect-btn");
+    const effectContent = document.getElementById("effect-content");
+    effectBtn.onclick = () => {
+        let renderer, composer;
+        const ri = (effect) => {
+            let t = rendererInit(effect);
+            renderer = t.renderer;
+            composer = t.composer;
+        };
+        if (effectContent.innerHTML == "E1") {
+            ri(1);
+            effectContent.innerHTML = "E2";
+        }
+        else if (effectContent.innerHTML == "E2") {
+            ri(2);
+            effectContent.innerHTML = "OR";
+        }
+        else if (effectContent.innerHTML == "OR") {
+            ri(0);
+            effectContent.innerHTML = "E1";
+        }
+        if (effectType) playing.setCoverColor("#002FA7");
+        else playing.setCoverColor(game.maps.backgroundColor);
+        if (effectType) renderer.setClearColor(0, 1);
+        else renderer.setClearColor(game.maps.backgroundColor, 1);
+        composer.render();
+    };
+    effectContent.innerHTML = "E1";
+    effectBtn.style.display = "";
+    new ResizeObserver(autoAdaptsSizeCallback(effectContent)).observe(effectBtn);
 }
 
 

@@ -73,11 +73,11 @@ body:fullscreen .full-screen-icon-btn {
     background-size: contain;
 }
 @media(hover: hover) and (pointer: fine) {
-    [id$="-icon-btn"]:hover, [class*="-icon-btn"]:hover {
+    [id$="-icon-btn"]:hover, [class*="-icon-btn"]:hover, #effect-btn:hover {
         filter: brightness(80%);
     }
 }
-[id$="-icon-btn"]:active, [class*="-icon-btn"]:active {
+[id$="-icon-btn"]:active, [class*="-icon-btn"]:active, #effect-btn:active {
     filter: brightness(50%);
 }
 .trophy-icon {
@@ -100,6 +100,14 @@ body:fullscreen .full-screen-icon-btn {
     float: right;
     margin-left: auto;
     margin-right: 4.9074vw;
+}
+#effect-btn {
+    box-sizing: border-box;
+    border: max(0.25vh, 0.2vw) #fff solid;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .title {
@@ -195,8 +203,10 @@ body:fullscreen .full-screen-icon-btn {
         color: #F9BA6E;
     }
 }
-#page-welcome .levels-mode-btn:hover {
-    filter: brightness(80%) invert(1);
+@media(hover: hover) and (pointer: fine) {
+    #page-welcome .levels-mode-btn:hover {
+        filter: brightness(80%) invert(1);
+    }
 }
 #page-welcome .levels-mode-btn:active {
     filter: brightness(50%);
@@ -227,8 +237,10 @@ body:fullscreen .full-screen-icon-btn {
     justify-content: center;
     align-items: center;
 }
-#page-challenges .levels > *:hover {
-    filter: brightness(80%);
+@media(hover: hover) and (pointer: fine) {
+    #page-challenges .levels > *:hover {
+        filter: brightness(80%);
+    }
 }
 #page-challenges .levels > *:active {
     filter: brightness(50%);

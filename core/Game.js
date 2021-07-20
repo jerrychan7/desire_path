@@ -6,7 +6,7 @@ const { OrbitControls } = THREE;
 import * as pages from "./Page.js";
 import GameObj from "./GameObj.js";
 import * as entities from "../Entities/index.js";
-import { camera, cameraInitPos, renderer, scene, calcHeightOfView, getHeightOfView } from "./threeApp.js";
+import { composer, camera, cameraInitPos, renderer, scene, calcHeightOfView, getHeightOfView, effectType, effectPasses } from "./threeApp.js";
 import sounds from "../sounds/index.js";
 
 class Animate {
@@ -35,7 +35,7 @@ class Animate {
             this.timer = requestAnimationFrame(this.onrender.bind(this));
     };
     render() {
-        renderer.render(scene, camera);
+        composer.render();
     };
 };
 
@@ -81,11 +81,12 @@ class Game {
             this.maps = maps;
         }
         else {
-            let maps = new gameMaps.GameMap(level, { playerPos: player.position, viewHeight: getHeightOfView() });
+            let maps = new gameMaps.GameMap(level, { playerPos: player.position });
             scene.add(maps);
             this.maps = maps;
         }
-        renderer.setClearColor(this.maps.backgroundColor, 1);
+        if (effectType) renderer.setClearColor(0, 1);
+        else renderer.setClearColor(this.maps.backgroundColor, 1);
         camera.position.copy(cameraInitPos);
     };
     showFirstFrame() {
