@@ -64,4 +64,3 @@ python -m http.server [port]
 * More challenge level
 * More map unit
 * More comfortable map loading
-* Adjust the color of dead particles according to the color of the cube

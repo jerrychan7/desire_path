@@ -22,7 +22,7 @@ const dieParticles = [
     new THREE.Mesh(dieGeo, new THREE.MeshLambertMaterial({ color: 0xA8A8A8, })),
 ];
 
-function createEmitter(meshs) {
+function createEmitter(meshs, addColor = false) {
     const pemitter = new Nebula.Emitter();
     pemitter
         .setRate(new Nebula.Rate(5, 0))
@@ -38,6 +38,11 @@ function createEmitter(meshs) {
             new Nebula.Alpha(1, 0),
             new Nebula.Gravity(20),
         ]);
+    if (addColor) {
+        let color = new Nebula.Color([0xA8A8A8, 0xDFDFDF, 0xA8A8A8]);
+        pemitter.addBehaviour(color);
+        pemitter.color = color;
+    }
     return pemitter;
 }
 
@@ -45,25 +50,16 @@ const crystalEmitter = createEmitter(crystalParticle);
 const bigCrystalEmitter = createEmitter(bigCrystalParticle);
 const hugeCrystalEmitter = createEmitter(hugeCrystalParticle);
 
-const dieEmitters = dieParticles.map(dp => createEmitter(dp));
-dieEmitters.forEach(de => particleSystem.addEmitter(de.setRate(new Nebula.Rate(2, 0))));
-
-// const dieEmitter = createEmitter(dieParticles);
-
-// console.log(dieEmitters[0].particles);
-
 particleSystem.addEmitter(crystalEmitter).addEmitter(bigCrystalEmitter).addEmitter(hugeCrystalEmitter);
+
+const dieEmitter = createEmitter(dieParticles, true);
+particleSystem.addEmitter(dieEmitter);
 
 export function die(position, playerColor = null) {
     let {x, z} = position;
-    if (playerColor) {
-        // console.log(playerColor);
-        dieParticles.forEach((dp, i) => dp.material.color = playerColor[i]);
-        // dieParticles.forEach(dp => dp.material.color = new THREE.Color(~~(Math.random() * (10 ** 6))));
-    }
-    dieEmitters.forEach(de => de.setPosition({x, y: playerSize / 2, z}).emit(0.1));
-    // setTimeout(() => {console.log(dieEmitters[0].particles[0]);}, 100);
-    // dieEmitter.setPosition({x, y: playerSize / 2, z}).emit(0.1);
+    if (playerColor)
+        dieEmitter.color.reset(playerColor);
+    dieEmitter.setPosition({x, y: playerSize / 2, z}).emit(0.1);
 };
 export function crystal(position) {
     let {x, z} = position;
