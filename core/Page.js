@@ -381,6 +381,10 @@ function init() {
             pause.info.innerHTML = "Endless Mode";
         else pause.info.innerHTML = "Challenge Mode<br/>Level " + challenges.currentLevel;
     });
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden" && game.state == "playing")
+            pause.show();
+    });
 
     window.addEventListener("keydown", e => {
         if (["Space", "Enter"].includes(e.code)) {
