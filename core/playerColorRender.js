@@ -1,5 +1,6 @@
 
 // import * as THREE from "three";
+import { initLightsGroup } from "./threeApp.js";
 
 const SQRT3 = (3 ** 0.5);
 const SQRT2 = Math.SQRT2;
@@ -44,14 +45,7 @@ class PlayerColorSelectRenderer extends THREE.WebGLRenderer {
 
         const scene = this.scene = new THREE.Scene();
 
-        const lights = new THREE.Group();
-        lights.add(new THREE.AmbientLight(0xffffff, 0.4));
-        let light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.setFromSphericalCoords(10, 42 * Math.PI / 180, 241 * Math.PI / 180);
-        lights.add(light);
-        light = new THREE.DirectionalLight(0xffffff, 0.1);
-        light.position.set(-10, 0, -10);
-        lights.add(light);
+        const lights = initLightsGroup();
         scene.add(lights);
 
         const mod = this.playerMod = new PlayerMod(colors);

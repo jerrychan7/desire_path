@@ -2,6 +2,7 @@
 import GameObj from "./GameObj.js";
 import * as gameMaps from "./maps.js";
 import { PlayerMod, constants } from "../models/index.js";
+import { initLightsGroup } from "./threeApp.js";
 const { groundSize, groundFaceSize } = constants;
 
 export function init() {
@@ -21,14 +22,7 @@ export function init() {
     let g = new THREE.Group();
     scene.add(g.add(maps, player));
     renderer.setClearColor(maps.backgroundColor, 1);
-    const lights = new THREE.Group();
-    lights.add(new THREE.AmbientLight(0xffffff, 0.4));
-    let light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.setFromSphericalCoords(10, 42 * Math.PI / 180, 241 * Math.PI / 180);
-    lights.add(light);
-    light = new THREE.DirectionalLight(0xffffff, 0.1);
-    light.position.set(-10, 0, -10);
-    lights.add(light);
+    const lights = initLightsGroup();
     scene.add(lights);
     const cos = (2 / 3) ** 0.5;
     const camera = new THREE.OrthographicCamera(
