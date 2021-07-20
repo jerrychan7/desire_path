@@ -37,7 +37,6 @@ class Page {
     };
     async show(msg) {
         this.dispatchEvent("onbeforeshow", msg);
-        this.domElement.style.display = "";
         if (this.fadeIn) {
             this.domElement.style.transition = "none";
             this.domElement.style.opacity = 0;
@@ -45,6 +44,7 @@ class Page {
             this.domElement.style.transition = "";
             this.domElement.style.opacity = 1;
         }
+        this.domElement.style.display = "";
         history.push(this);
         history.shift();
         this.dispatchEvent("onshown", msg);
