@@ -352,7 +352,7 @@ function init() {
     };
     challengesSuccess.addEventListener("onshown", (level) => {
         challengesSuccess.levelNum.innerHTML = level;
-        playing.setCoverColor("transparent");
+        playing.oncover(false, false);
     });
     game.addEventListener("onChallengeSuccess", (level) => {
         challengesSuccess.show(level);
