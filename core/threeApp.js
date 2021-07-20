@@ -2,6 +2,27 @@
 import * as pages from "./Page.js";
 import { groundSize, groundFaceSize } from "../models/constants.js";
 
+class GlitchPass extends THREE.GlitchPass {
+    constructor(...args) {
+        super(...args);
+        this.active = false;
+    };
+    get active() { return this._active; };
+    set active(v) {
+        this._active = !!v;
+        if (!!v) this.curF = 0;
+        else this.curF = this.randX / 5 + 1;
+    };
+    render(...args) {
+        if (!this.active) this.curF = this.randX / 5 + 1;
+        else if (this.curF >= this.randX / 5)
+            this.active = false;
+        super.render(...args);
+    };
+    generateTrigger() {
+        this.randX = THREE.MathUtils.randInt(40, 80);
+    };
+};
 
 export let renderer = null;
 export let composer = null;
@@ -46,6 +67,7 @@ scene.add(lights);
 export let effectType = 0;
 export let effectPasses = {
     render: new THREE.RenderPass(scene, camera),
+    glitch: new GlitchPass(),
     pixel: new THREE.ShaderPass(THREE.PixelShader),
     sobel: new THREE.ShaderPass(THREE.SobelOperatorShader),
     grayScale: new THREE.ShaderPass(THREE.LuminosityShader),
@@ -83,6 +105,7 @@ export function rendererInit(effect = 0) {
     }
 
     composer.addPass(effectPasses.render);
+    composer.addPass(effectPasses.glitch);
 
     if (effect == 0) return {renderer, composer};
     if (effect == 1) {

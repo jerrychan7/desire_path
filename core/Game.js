@@ -258,6 +258,7 @@ class Game {
             console.log("game over");
             this.state = "over";
             this.overTimestamp = timestamp;
+            effectPasses.glitch.active = true;
         }
 
         psys.update();
