@@ -136,6 +136,7 @@ function init() {
     pause.replayBtn = pause.domElement.getElementsByClassName("replay-icon-btn")[0];
     pause.playBtn = pause.domElement.getElementsByClassName("play-icon-btn")[0];
     pause.info = pause.domElement.getElementsByClassName("info")[0];
+    pause.settingBtn = pause.domElement.getElementsByClassName("setting-icon-btn")[0];
 
 
     function scrollHorizontally(e) {
@@ -237,6 +238,9 @@ function init() {
         else playing.setCoverColor(game.maps.backgroundColor);
     });
 
+    setting.addEventListener("onbeforeshow", (t, lastPage) => {
+        setting.lastPage = lastPage;
+    });
     setting.musicBtn.onclick = () => {
         // if (hasClass(setting.musicBtn, "muted-music-icon-btn")) {
             // removeClass(setting.musicBtn, "muted-music-icon-btn");
@@ -252,7 +256,7 @@ function init() {
     };
     setting.backBtn.onclick = () => {
         setting.hide();
-        welcome.show();
+        setting.lastPage.show();
     };
 
     challenges.backBtn.onclick = () => {
@@ -374,12 +378,23 @@ function init() {
         playing.show();
         game.start();
     };
+    pause.settingBtn.onclick = () => {
+        pause.hide();
+        setting.show();
+    };
     pause.addEventListener("onbeforeshow", () => {
         game.pause();
         playing.oncover();
-        if (playing.lastPage == welcome)
+        if (playing.lastPage == welcome) {
             pause.info.innerHTML = "Endless Mode";
-        else pause.info.innerHTML = "Challenge Mode<br/>Level " + challenges.currentLevel;
+            pause.domElement.getElementsByClassName("topside-btn-margin")[0].style.display = "";
+        }
+        else {
+            pause.info.innerHTML = "Challenge Mode<br/>Level " + challenges.currentLevel;
+            console.log(
+                pause.domElement.getElementsByClassName("topside-btn-margin")[0])
+            pause.domElement.getElementsByClassName("topside-btn-margin")[0].style.display = "none";
+        }
     });
     document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "hidden" && game.state == "playing")
